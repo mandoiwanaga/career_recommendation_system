@@ -1,5 +1,5 @@
 # dreamjobber
-Haven't discover your passion? Your dreamjob? Figure out what you were born to do with DreamJobber!
+Haven't discovered your passion? Your dreamjob? Figure out what you were born to do with DreamJobber!
 
 
 # Business Understanding
