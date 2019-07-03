@@ -31,6 +31,7 @@ def preprocess(text):
          'afterwards',
          'again',
          'against',
+         'age',
          'agency',
          'all',
          'almost',
@@ -56,13 +57,16 @@ def preprocess(text):
          'anywhere',
          'apply',
          'application',
+         'applications',
          'applicant',
+         'applicants',
          'are',
          'around',
          'as',
          'at',
          'bachelor',
-         'nbachelor',
+         'bachelors',
+         "bachelor's",
          'back',
          'be',
          'became',
@@ -95,6 +99,8 @@ def preprocess(text):
          'candidate',
          'cannot',
          'cant',
+         'card',
+         'career',
          'certificate',
          'certification',
          'ciber',
@@ -105,7 +111,10 @@ def preprocess(text):
          'click',
          'client',
          'co',
+         'college',
          'color',
+         'com',
+         'company',
          'compensation',
          'computer',
          'con',
@@ -199,6 +208,10 @@ def preprocess(text):
          'give',
          'global',
          'go',
+         'govern',
+         'government',
+         'green',
+         'greencard',
          'had',
          'half',
          'has',
@@ -225,8 +238,11 @@ def preprocess(text):
          'hours',
          'hundred',
          'i',
+         'identity',
          'ie',
          'if',
+         'immediate',
+         'immediately',
          'in',
          'inc',
          'include',
@@ -238,6 +254,8 @@ def preprocess(text):
          'it',
          'its',
          'itself',
+         'jobs',
+         'job',
          'just',
          'keep',
          'kg',
@@ -245,8 +263,10 @@ def preprocess(text):
          'last',
          'latter',
          'latterly',
+         'law',
          'least',
          'less',
+         'life',
          'linkedin',
          'ltd',
          'local',
@@ -255,6 +275,8 @@ def preprocess(text):
          'make',
          'many',
          'master',
+         'masters',
+         "master's",
          'may',
          'me',
          'meanwhile',
@@ -280,6 +302,8 @@ def preprocess(text):
          'namely',
          'nation',
          'national',
+         'needs',
+         'need',
          'neither',
          'never',
          'nevertheless',
@@ -318,16 +342,18 @@ def preprocess(text):
          'over',
          'own',
          'part',
+         'pay',
          'payroll',
          'per',
          'perhaps',
+         'permanent',
          'phd',
          'please',
          'position',
          'pregnancy',
          'pregnant',
          'preferred',
-         'npreferred',
+         'protect',
          'put',
          'qualification',
          'qualifications',
@@ -337,6 +363,8 @@ def preprocess(text):
          'rather',
          're',
          'really',
+         'refer',
+         'referral',
          'regarding',
          'reimbursement',
          'reimburse',
@@ -349,9 +377,12 @@ def preprocess(text):
          'recruiter',
          'recruit',
          'resume',
+         'rights',
+         'right',
          'robert',
          'salesforce',
          'same',
+         'sap',
          'say',
          'school',
          'see',
@@ -431,6 +462,7 @@ def preprocess(text):
          'top',
          'toward',
          'towards',
+         'transfer',
          'twelve',
          'twenty',
          'two',
@@ -447,6 +479,7 @@ def preprocess(text):
          'very',
          'veteran',
          'via',
+         'vision',
          'was',
          'we',
          'well',
@@ -480,7 +513,9 @@ def preprocess(text):
          'without',
          'world',
          'would',
+         'www',
          'year',
+         'years',
          'yet',
          'you',
          'your',
@@ -617,7 +652,7 @@ def preprocess(text):
          'u.s.',
          'asia']
     for token in gensim.utils.simple_preprocess(text):
-        if token not in stopwords and len(token) > 3:
+        if token not in stopwords and len(token) > 2:
             result.append(lemmatize_stemming(token))
     return result
 
@@ -673,9 +708,40 @@ def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
 
 
 
+def show_topics_sentences(ldamodel, corpus, texts):
+    """Returns df with topics and descriptions"""
+    sent_topics_df = pd.DataFrame()
 
-def make_recommendation(nn_model, user, df):
+    # Get main topic in each document
+    for i, row in enumerate(ldamodel[corpus]):
+        row = sorted(row, key=lambda x: (x[1]), reverse=True)
+        # Get the Dominant topic, Perc Contribution and Keywords for each document
+        for j, (topic_num, prop_topic) in enumerate(row):
+            if j == 0:  # => dominant topic
+                wp = ldamodel.show_topic(topic_num)
+                topic_keywords = ", ".join([word for word, prop in wp])
+                sent_topics_df = sent_topics_df.append(pd.Series([int(topic_num), round(prop_topic,4), topic_keywords]), ignore_index=True)
+            else:
+                break
+    sent_topics_df.columns = ['Dominant_Topic', 'Perc_Contribution', 'Topic_Keywords']
+
+    # Add original text to the end of the output
+    contents = pd.Series(texts)
+    sent_topics_df = pd.concat([sent_topics_df, contents], axis=1)
+    return(sent_topics_df)
+
+
+
+
+
+
+
+
+
+def make_recommendation(nn_model, df, user=None):
     """Return top 10 recommended jobs based off user input"""
+    if user is None:
+        user = np.array([0,0,0,0,0,0,0,0,0]).reshape(1,-1)
     
     distances, indices = nn_model.kneighbors(user)
     
@@ -700,21 +766,23 @@ def make_recommendation(nn_model, user, df):
 def input_user_scores():
     """Collect user score"""
     
-    user = []
+   
     print('''Scale of 0-10.
     0 is Do NOT agree and 10 is agree''')
 
-    #topics=['Database Admin', 'Computer Network', 'Software/App Dev', 'Security', 
-     #      'Analyst', 'Leadership', 'Computer Support', 
-      #     'WebDev', 'Cloud Computing']
-    topics=['cloud computing', 'creative', 'building things', 'giving speeches', 
-            'logical', 'staying organized', 'a people person', 'building forts', 'resolving issues/troubleshooting']
-            
+    #col_names=['Computer Network', 'Web Dev', 'Security', 'Analyst', 
+     #      'Leadership', 'Database Admin', 'Cloud Computing', 'Computer Support', 'Software/App Dev']
+        
+        
+    topics=['Computer Network', 'Web Dev', 'Security', 'Analyst', 
+           'Leadership', 'Database Admin', 'Cloud Computing', 'Computer Support', 'Software/App Dev']
+        
             
     user_scores = [float(input(f"Agree or Disagree: I am/I like {topic}: ")) / 10
                    for topic in topics]
     print('\n')
-    user.append(np.array(user_scores).reshape(1, -1))
+    user = np.array(user_scores).reshape(1, -1)
+    return user
     
     
     
@@ -722,7 +790,7 @@ def input_user_scores():
 def collect_score_and_recommend(nn_model, df):
     """Collect user score then output top 10 recommendations"""
     user = input_user_scores()
-    return make_recommendation(nn_model, user, df)
+    return make_recommendation(nn_model, df, user)
 
 
 
