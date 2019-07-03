@@ -113,6 +113,7 @@ def preprocess(text):
          'contract',
          'could',
          'couldnt',
+         'country',
          'cry',
          'cybercoder',
          'cybercoders',
@@ -125,6 +126,7 @@ def preprocess(text):
          'did',
          'didn',
          'diploma',
+         'direct',
          'disability',
          'do',
          'does',
@@ -134,6 +136,7 @@ def preprocess(text):
          'done',
          'down',
          'due',
+         'duration',
          'during',
          'each',
          'east',
@@ -143,6 +146,8 @@ def preprocess(text):
          'either',
          'eleven',
          'eliassen',
+         'eligible',
+         'eligibility',
          'else',
          'elsewhere',
          'email',
@@ -168,6 +173,7 @@ def preprocess(text):
          'experienced',
          'experience',
          'fahrenheit',
+         'federal',
          'few',
          'fico',
          'fifteen',
@@ -211,9 +217,12 @@ def preprocess(text):
          'him',
          'himself',
          'hire',
+         'hired',
          'his',
          'how',
          'however',
+         'hour',
+         'hours',
          'hundred',
          'i',
          'ie',
@@ -241,6 +250,7 @@ def preprocess(text):
          'linkedin',
          'ltd',
          'local',
+         'location',
          'made',
          'make',
          'many',
@@ -254,6 +264,9 @@ def preprocess(text):
          'mine',
          'minimum',
          'nminimum',
+         'month',
+         'months',
+         'monthly',
          'more',
          'moreover',
          'most',
@@ -285,6 +298,7 @@ def preprocess(text):
          'nowhere',
          'of',
          'off',
+         'offer',
          'often',
          'on',
          'once',
@@ -293,6 +307,7 @@ def preprocess(text):
          'onto',
          'opportunity',
          'or',
+         'oracle',
          'other',
          'others',
          'otherwise',
@@ -308,6 +323,7 @@ def preprocess(text):
          'perhaps',
          'phd',
          'please',
+         'position',
          'pregnancy',
          'pregnant',
          'preferred',
@@ -315,6 +331,7 @@ def preprocess(text):
          'put',
          'qualification',
          'qualifications',
+         'qualify',
          'quite',
          'race',
          'rather',
@@ -329,8 +346,11 @@ def preprocess(text):
          'required',
          'nrequired',
          'requirement',
+         'recruiter',
+         'recruit',
          'resume',
          'robert',
+         'salesforce',
          'same',
          'say',
          'school',
@@ -364,8 +384,11 @@ def preprocess(text):
          'somewhere',
          'south',
          'staff',
+         'state',
+         'states',
          'still',
          'such',
+         'summary',
          'system',
          'take',
          'tek',
@@ -455,6 +478,7 @@ def preprocess(text):
          'with',
          'within',
          'without',
+         'world',
          'would',
          'year',
          'yet',
@@ -598,18 +622,20 @@ def preprocess(text):
     return result
 
 
+
+
 def remove_brackets(list1):
     """Remove [] from text"""
     return str(list1).replace('[','').replace(']','')
 
+def get_first_title(title):
+    """Return first title in job_title"""
+    title = re.sub(r"[Cc]o[\-\ ]","", title)
+    split_titles = re.split(r"\,|\:|\(|and", title)
+    return split_titles[0].strip()
 
 
-jobtitle_stopwords = ['bonus', 
-                      'duration',
-                      'month',
-                      'sign-on',
-                      'year']
-                      
+
 
 
 
@@ -660,7 +686,7 @@ def make_recommendation(nn_model, user, df):
         
     similarity = []
     for distance in distances[0]:
-        similarity.append(round(distance, 3))
+        similarity.append(round(distance, 8))
         
     rec = []    
     for index, value in enumerate(job_recs[:10], 1):
@@ -668,8 +694,7 @@ def make_recommendation(nn_model, user, df):
    
     
     return list(zip(rec, similarity[:10]))
-
-
+    
 
 
 def input_user_scores():
@@ -682,8 +707,8 @@ def input_user_scores():
     #topics=['Database Admin', 'Computer Network', 'Software/App Dev', 'Security', 
      #      'Analyst', 'Leadership', 'Computer Support', 
       #     'WebDev', 'Cloud Computing']
-    topics=['staying organized', 'resolving issues', 'building things', 'building forts', 
-            'logical', 'giving speeches', 'a people person', 'creative', 'cloud computing']
+    topics=['cloud computing', 'creative', 'building things', 'giving speeches', 
+            'logical', 'staying organized', 'a people person', 'building forts', 'resolving issues/troubleshooting']
             
             
     user_scores = [float(input(f"Agree or Disagree: I am/I like {topic}: ")) / 10
