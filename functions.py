@@ -13,14 +13,6 @@ from gensim.corpora.dictionary import Dictionary
 
 
 
-with open(‘.secrets/mongodb_credentials.txt’, ‘r’) as f:
-    conn_string = f.read().strip()
-
-mc = pymongo.MongoClient(conn_string)
-jobrec_db = mc[‘job_recommendation_db’]
-user_coll = jobrec_db[‘user_collection’]
-
-
 
 
 
@@ -744,62 +736,6 @@ def show_topics_sentences(ldamodel, corpus, texts):
 
 
 
-
-
-
-def make_recommendation(nn_model, df, user=None):
-    """Return top 10 recommended jobs based off user input"""
-    if user is None:
-        user = np.array([0,0,0,0,0,0,0,0,0]).reshape(1,-1)
-    
-    distances, indices = nn_model.kneighbors(user)
-    
-    job_recs = []
-    for index in indices[0]:
-        job_recs.append(df.iloc[index])
-        
-        
-    similarity = []
-    for distance in distances[0]:
-        similarity.append(round(distance, 8))
-        
-    rec = []    
-    for index, value in enumerate(job_recs[:10], 1):
-        rec.append("{}. {}".format(index, value))
-   
-    
-    return list(zip(rec, similarity[:10]))
-    
-
-
-def input_user_scores():
-    """Collect user score"""
-    
-   
-    print('''Scale of 0-10.
-    0 is Do NOT agree and 10 is agree''')
-
-    #col_names=['Computer Network', 'Web Dev', 'Security', 'Analyst', 
-     #      'Leadership', 'Database Admin', 'Cloud Computing', 'Computer Support', 'Software/App Dev']
-        
-        
-    topics=['Computer Network', 'Web Dev', 'Security', 'Analyst', 
-           'Leadership', 'Database Admin', 'Cloud Computing', 'Computer Support', 'Software/App Dev']
-        
-            
-    user_scores = [float(input(f"Agree or Disagree: I am/I like {topic}: ")) / 10
-                   for topic in topics]
-    print('\n')
-    user = np.array(user_scores).reshape(1, -1)
-    return user
-    
-    
-    
-    
-def collect_score_and_recommend(nn_model, df):
-    """Collect user score then output top 10 recommendations"""
-    user = input_user_scores()
-    return make_recommendation(nn_model, df, user)
 
 
 
