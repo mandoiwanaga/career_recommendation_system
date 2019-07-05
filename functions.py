@@ -13,6 +13,17 @@ from gensim.corpora.dictionary import Dictionary
 
 
 
+with open(‘.secrets/mongodb_credentials.txt’, ‘r’) as f:
+    conn_string = f.read().strip()
+
+mc = pymongo.MongoClient(conn_string)
+jobrec_db = mc[‘job_recommendation_db’]
+user_coll = jobrec_db[‘user_collection’]
+
+
+
+
+
 def lemmatize_stemming(text):
     """Return lemmetized and stemmed text"""
     stemmer = SnowballStemmer('english')
@@ -67,7 +78,6 @@ def preprocess(text):
          'bachelor',
          'bachelors',
          "bachelor's",
-         'back',
          'be',
          'became',
          'because',
@@ -199,7 +209,6 @@ def preprocess(text):
          'found',
          'four',
          'from',
-         'front',
          'full',
          'fulltime',
          'further',
