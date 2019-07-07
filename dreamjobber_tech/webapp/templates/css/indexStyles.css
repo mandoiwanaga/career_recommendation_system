@@ -1,0 +1,13 @@
+body{ 
+}
+
+#nav-bar { 
+    background: blue;
+    width: 50%; 
+    float: right
+} 
+
+.nav-list{ 
+    float:left;
+    width: 20%; 
+}

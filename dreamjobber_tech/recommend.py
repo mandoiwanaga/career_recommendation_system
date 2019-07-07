@@ -17,9 +17,9 @@ from gensim.corpora.dictionary import Dictionary
 with open('.secrets/mongodb_credentials.txt', 'r') as f:
     conn_string = f.read().strip()
 
-    mc = pymongo.MongoClient(conn_string)
-    jobrec_db = mc['job_recommendation_db']
-    user_coll = jobrec_db['user_collection']
+mc = pymongo.MongoClient(conn_string)
+jobrec_db = mc['job_recommendation_db']
+user_coll = jobrec_db['user_collection']
 
     
     
@@ -32,12 +32,11 @@ def input_user_scores():
     print('''Scale of 0-10.
     0 is Do NOT agree and 10 is agree''')
 
-    #col_names=['Computer Network', 'Web Dev', 'Security', 'Analyst', 
-     #      'Leadership', 'Database Admin', 'Cloud Computing', 'Computer Support', 'Software/App Dev']
+    #col_names=['Leadership', 'WebDev', 'Cloud Computing', 'Computer Network', 
+         #  'Database Admin', 'Software/App Dev', 'Analyst', 'Security', 'Computer Support']
         
-        
-    topics=['Computer Network', 'Web Dev', 'Security', 'Analyst', 
-           'Leadership', 'Database Admin', 'Cloud Computing', 'Computer Support', 'Software/App Dev']
+    topics=['Leadership', 'WebDev', 'Cloud Computing', 'Computer Network', 
+           'Database Admin', 'Software/App Dev', 'Analyst', 'Security', 'Computer Support']
         
             
     user_scores = [float(input(f"Agree or Disagree: I am/I like {topic}: ")) / 10
