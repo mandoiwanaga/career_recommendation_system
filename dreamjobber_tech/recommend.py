@@ -14,6 +14,7 @@ from gensim.corpora.dictionary import Dictionary
 
 
 
+
 with open('.secrets/mongodb_credentials.txt', 'r') as f:
     conn_string = f.read().strip()
 
@@ -32,11 +33,12 @@ def input_user_scores():
     print('''Scale of 0-10.
     0 is Do NOT agree and 10 is agree''')
 
-    #col_names=['Leadership', 'WebDev', 'Cloud Computing', 'Computer Network', 
-         #  'Database Admin', 'Software/App Dev', 'Analyst', 'Security', 'Computer Support']
-        
-    topics=['Leadership', 'WebDev', 'Cloud Computing', 'Computer Network', 
-           'Database Admin', 'Software/App Dev', 'Analyst', 'Security', 'Computer Support']
+    
+    #col_names=['Analyst', 'Security', 'Leadership', 'Software/Web Dev', 
+     #      'Cloud Computing', 'Computer Network', 'Database Admin', 'Computer Support', 'WebDev']
+
+    topics=['Analyst', 'Security', 'Leadership', 'Software/Web Dev', 
+           'Cloud Computing', 'Computer Network', 'Database Admin', 'Computer Support', 'WebDev']
         
             
     user_scores = [float(input(f"Agree or Disagree: I am/I like {topic}: ")) / 10
@@ -86,7 +88,7 @@ def collect_score_and_recommend(nn_model, df):
 
 
 def collect_feedback(result, user):
-    """Collect user feedback and store it"""
+    """Collect user feedback and store it in mongodb atlas"""
     user_input = input("""How did you like your recommendations? bad, okay, or good""")
     
     user_feedback = {'result': result,
@@ -102,7 +104,9 @@ def collect_feedback(result, user):
     user_coll.insert_one(user_feedback)
     
     
+    
 def show_to_user(nn_model, df):
+    """Collect user score, make recommendation, collect feedback, and store in mongodb atlas"""
     user, result = collect_score_and_recommend(nn_model, df)
     print(result)
     collect_feedback(result, user)
