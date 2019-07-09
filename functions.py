@@ -15,14 +15,14 @@ from gensim.corpora.dictionary import Dictionary
 
 
 
-
-def lemmatize_stemming(text):
+def lemmatize_stem(text):
     """Return lemmetized and stemmed text"""
     stemmer = SnowballStemmer('english')
     return stemmer.stem(WordNetLemmatizer().lemmatize(text, pos='v'))
 
 
 def preprocess(text):
+    """Remove stop words and words with less than three characters for job descriptions"""
     result = []
     stopwords = ['a',
          'about',
@@ -654,41 +654,34 @@ def preprocess(text):
          'asia']
     for token in gensim.utils.simple_preprocess(text):
         if token not in stopwords and len(token) > 2:
-            result.append(lemmatize_stemming(token))
+            result.append(lemmatize_stem(token))
     return result
 
 
 
 
 def remove_brackets(list1):
-    """Remove [] from text"""
+    """Remove brackets from text"""
     return str(list1).replace('[','').replace(']','')
 
 
 
 
-
-
-#Revmoe Punctuations that definitely won't contribute
 def remove_punctuation(s):
-    #Phase 1, handle punctuation.
-    # Directly removable
-    #  '/', ',', '\', '|',
+    """Remove punctuations from text"""
     for char in ['/', '//', '|', '?', '(', ')', '{', '}', '[', ']', ',', '.', '-', '!',
                  '~', '_', '@', ':', '55', '*', ';', '14']:
         s = s.replace(char, " ")
     s.strip()
-    #remove those consists of only punctuation and number
     s = filter(lambda x: not re.match("[0-9~!@#$%^&*()_\-+{}\":;\']+", x), s.split())
     return ' '.join(s)
 
 
+
+
 def remove_stop_words(text):
-    
-    """Remove stopwords from job titles"""
-    
+    """Remove stopwords for job titles"""
     result = []
-    
     jobtitle_stopwords = ['a',
                           'absence',
                           'accepted',
@@ -1093,6 +1086,7 @@ def remove_stop_words(text):
                           'requirement',
                           'requirements',
                           "req'd",
+                          'remote',
                           'resident',
                           'residents',
                           'richardson',
@@ -1229,8 +1223,7 @@ def remove_stop_words(text):
 
 
 
-#Find the optimal number of topics
-def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
+def compute_coherence_scores(dictionary, corpus, texts, limit, start=2, step=3):
     """
     Compute c_v coherence for various number of topics
 
@@ -1260,8 +1253,9 @@ def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=3):
 
 
 
+
 def show_topics_sentences(ldamodel, corpus, texts):
-    """Returns df with topics and descriptions"""
+    """Returns dataframe with topics and descriptions"""
     sent_topics_df = pd.DataFrame()
 
     # Get main topic in each document
@@ -1272,7 +1266,10 @@ def show_topics_sentences(ldamodel, corpus, texts):
             if j == 0:  # => dominant topic
                 wp = ldamodel.show_topic(topic_num)
                 topic_keywords = ", ".join([word for word, prop in wp])
-                sent_topics_df = sent_topics_df.append(pd.Series([int(topic_num), round(prop_topic,4), topic_keywords]), ignore_index=True)
+                sent_topics_df = sent_topics_df.append(pd.Series([int(topic_num), 
+                                                                  round(prop_topic,4), 
+                                                                  topic_keywords]), 
+                                                                   ignore_index=True)
             else:
                 break
     sent_topics_df.columns = ['Dominant_Topic', 'Perc_Contribution', 'Topic_Keywords']
