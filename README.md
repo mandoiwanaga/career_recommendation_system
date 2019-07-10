@@ -1,37 +1,40 @@
 # dreamjobber (tech edition)
-Haven't discovered your passion? Your dreamjob? Figure out what you were born to do with DreamJobber!
+## Recommendations System for Tech Jobs
 
 
 # Business Understanding
-For a lot of people figuring out what you want to do as a career is a difficult task, most especially for young individuals graduating from high school or Military Veterans. There are many new jobs and fields emerging in tech world that many people may not be aware of. I want to create a simple application that requires a user to answer a few questions about their interest etc, and give recommendations of possible dream TECH jobs, this will give the user direction in making some important life decisions.  
+Have you ever asked yourself what tech job should I pursue? Maybe even what kind of tech jobs are out there today? (2019). I sure have and its not an easy task considering there are new tech jobs and fields emerging that some people may not be aware of. So I've made a Tech Job specific Recommendation System that will find jobs based on your preferences. 
+
+# Product: [dreamjobber](www.dreamjobber.online)
 
 # Data Understanding
-My source of data will be from DICE. Dice is an online job search platform for TECH jobs only. I will aquire the data via web-scrape and store them as json files. 
+My source of data is [dicejobs](www.dice.com), an online job search platform for Tech jobs. 
+The data consisted of about 20,000 job titles and descriptions. Data was obtained via web-scrape using selenium and stored as json files. 
+
+Example of data scraped:
+
+!(images/dice.png)
 
 
 # Data Preparation
-1. Feature engineer (create df with job titles and job descriptions)
-2. Remove job titles with no descriptions
-3. Text Clean for job descriptions
+1. Feature engineer (create a dataframe with job titles and job descriptions)
+2. Text Clean 
+    - Remove punctuations, numbers, and lowercase all words
     - Tokenize
     - Remove words with fewer than 3 characters
     - Remove stop words
-    - Normalize words (Lemmetize)
-
+    - Normalize words (Lemmetize and Stem)
 
 
 # Modeling
-- bag of words
-- lda model for topic extraction
-- coherence to find optimal number of topics
-- label topics
-- classification with nearest neighbors
-
+After data preparation, I implemented Bag of Words for term frequency and gensim's bow2doc function to count the number of occurrences of each distinct word, convert the word to its integer word id and return the result as a sparse vector. I then used an LDA (Latent Dirichlet Allocation) model to classify job descriptions to 9 different topic groups. I chose 9 topic groups because it best represents the job groups in the Tech Job market. Next I created a dataframe with topic scores and their corresponding job titles and descriptions. 
+The next step was to tie in a user's input to make recommendations. Because my data is text data, I used an unsupervised learning model, Nearest Neighbors using Euclidean Distance metric. A user can input probabilities based on the 9 topics and will calculate the closest instances the model has been fitted on. 
 
 # Evaluating
+Because I don't have user data prior to modeling and deployment, I am collecting feedback evaluations from users. I will store the user's inputs, recommendation outputs, and feedback of whether they liked their recommendations or not. These are being stored in mongodb atlas. 
 
 
-# Deployment
-The model will be deployed as a Flask app with a user friendly interface. The user will simply answer a series of questions and it will output the top 10 recommended tech jobs. Bonus would be some job details like avg salary, education, and other useful info.
-
-#add instructions to replicate project
+# Future Work
+- Add links to the output of recommendations in order to provide details about each recommendation, ex.    description or avg salary. 
+- Classify job titles.
+- After collecting sufficient user feedback, create an ALS recommendation model.
