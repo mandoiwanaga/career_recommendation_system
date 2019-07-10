@@ -42,7 +42,7 @@ def index():
 
 
 with open('.secrets/mongodb_credentials.txt', 'r') as f:
-   conn_string = f.read().strip()
+    conn_string = f.read().strip()
 
 mc = pymongo.MongoClient(conn_string)
 jobrec_db = mc['job_recommendation_db']
@@ -55,7 +55,7 @@ feedback_coll = jobrec_db['user_feedback']
 #     """Collect user score"""
     
    
-#     print('''Scale of 0-10.
+#    print('''Scale of 0-10.
 #     0 is Do NOT agree and 10 is agree''')
 
 #     #col_names=['Analyst', 'Security', 'Leadership', 'Software/Web Dev', 
