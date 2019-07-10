@@ -5,10 +5,10 @@
 # Business Understanding
 Have you ever asked yourself what tech job should I pursue? Maybe even what kind of tech jobs are out there today? (2019). I sure have and it's not an easy task considering there are new tech jobs and fields emerging that some people may not be aware of. To solve this problem, I've made a Tech Job specific Recommendation System that will find jobs based on your preferences. 
 
-## Product: [dreamjobber.online](www.dreamjobber.online)
+## Product: <a href="http://www.dreamjobber.online/" rel="nofollow">dreamjobber.online</a>
 
 # Data Understanding
-My source of data is [dicejobs](www.dice.com), an online job search platform for Tech jobs. 
+My source of data is <a href="http://www.dice.com">DiceJobs</a>, an online job search platform for Tech jobs. 
 My data consisted of about 20,000 job titles and descriptions. Data was obtained via web-scrape using selenium and stored as json files. 
 
 Example of data scraped:
