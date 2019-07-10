@@ -1,5 +1,5 @@
-# dreamjobber (tech edition)
-## Recommendations System for Tech Jobs
+# DreamJobber (tech edition)
+### Recommendations System for Tech Jobs
 
 
 # Business Understanding
