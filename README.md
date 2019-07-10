@@ -3,13 +3,13 @@
 
 
 # Business Understanding
-Have you ever asked yourself what tech job should I pursue? Maybe even what kind of tech jobs are out there today? (2019). I sure have and its not an easy task considering there are new tech jobs and fields emerging that some people may not be aware of. So I've made a Tech Job specific Recommendation System that will find jobs based on your preferences. 
+Have you ever asked yourself what tech job should I pursue? Maybe even what kind of tech jobs are out there today? (2019). I sure have and it's not an easy task considering there are new tech jobs and fields emerging that some people may not be aware of. To solve this problem, I've made a Tech Job specific Recommendation System that will find jobs based on your preferences. 
 
 ## Product: [dreamjobber.online](www.dreamjobber.online)
 
 # Data Understanding
 My source of data is [dicejobs](www.dice.com), an online job search platform for Tech jobs. 
-The data consisted of about 20,000 job titles and descriptions. Data was obtained via web-scrape using selenium and stored as json files. 
+My data consisted of about 20,000 job titles and descriptions. Data was obtained via web-scrape using selenium and stored as json files. 
 
 Example of data scraped:
 
@@ -27,7 +27,7 @@ Example of data scraped:
 
 
 # Modeling
-After data preparation, I implemented Bag of Words for term frequency and gensim's bow2doc function to count the number of occurrences of each distinct word, convert the word to its integer word id and return the result as a sparse vector. I then used an LDA (Latent Dirichlet Allocation) model to classify job descriptions to 9 different topic groups. I chose 9 topic groups because it best represents the job groups in the Tech Job market. Next I created a dataframe with topic scores and their corresponding job titles and descriptions. 
+After data preparation, I implemented Bag of Words for term frequency and gensim's bow2doc function to count the number of occurrences of each distinct word, convert the word to its integer word id and return the result as a sparse vector. I then used an LDA (Latent Dirichlet Allocation) model to classify job descriptions to 9 different topic groups. I chose 9 topic groups because it best represents the job groups in the Tech Job market. Next I created a dataframe with topic scores and their corresponding job titles and descriptions. <br />
 The next step was to tie in a user's input to make recommendations. Because my data is text data, I used an unsupervised learning model, Nearest Neighbors using Euclidean Distance metric. A user can input probabilities based on the 9 topics and will calculate the closest instances the model has been fitted on. 
 
 # Evaluating
