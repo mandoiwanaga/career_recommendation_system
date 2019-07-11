@@ -8,7 +8,7 @@ Have you ever asked yourself what tech job should I pursue? Maybe even what kind
 ### Product: <a href="http://www.dreamjobber.online/" rel="nofollow">dreamjobber.online</a>
 
 ## Data Understanding
-My source of data is <a href="http://www.dice.com">DiceJobs</a>, an online job search platform for Tech jobs. 
+My source of data is <a href="http://www.dice.com">Dice</a>, an online job search platform for Tech jobs. 
 My data consisted of about 20,000 job titles and job descriptions. Data was obtained via web-scrape using selenium and stored as json files. 
 
 Example of data scraped:
