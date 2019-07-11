@@ -38,7 +38,7 @@ Once a user goes to the website, the individual will then use slider bars to rat
 <br />
 To run the flask app locally: Clone the repo, then the following command can be run in the terminal from the main folder.
 <br />
-`FLASK_APP=dreamjobber_tech/webapp/app.py flask run`
+`FLASK_APP=dreamjobber_web/webapp/app.py flask run`
 
 
 ## Evaluating
