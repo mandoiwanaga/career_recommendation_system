@@ -1,0 +1,27 @@
+.bg {
+    background-color: #0ca086b5;
+}
+
+.row1 { 
+width: 30%; 
+float: left;
+} 
+
+.mondow{ 
+    width: 250px; 
+    height: 250px; 
+    box-sizing: border-box; 
+    float: right;
+    clear: both; 
+    margin-right: 300px; 
+
+} 
+
+.row2 { 
+    margin: none;
+} 
+
+.list{ 
+    width: 100%;
+}
+

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset='utf-8'>
+       </head>
+
+<head>
+  <script type="text/javascript" src="brython.js"></script>
+  <script type="text/javascript" src="brython_stdlib.js"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Scrolling Nav - Start Bootstrap Template</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.css') }}">
+  
+  <!-- Custom styles for this template -->
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/scrolling-nav.css') }}">
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+  
+</head>
+
+<body id="page-top", onload="brython(1)">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">DSAF</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#about">Try me!</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#services">About</a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="bg text-center">
+    <div class="container text-center">
+      <h1 style=font-size:120px>DreamJobber</h1>
+      <p class="lead">Recommendation System for Tech Jobs</p>
+    </div>
+  </header>
+
+  <section id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <!-- <h2>About this page</h2> -->
+          <!-- <p class="lead">This is a great place to talk about your webpage. This template is purposefully unstyled so you can use it as a boilerplate or starting point for you own landing page designs! This template features:</p> -->
+          <ul class="list">
+              <script type="text/python3">
+                from browser import document, ajax
+                import json
+                import warnings
+            
+                def show_results(response):
+                    if response.status==200 or response.status==0:
+                      result = json.loads(response.text)
+                      
+                      html = '''
+                      <table class="table">
+                          <thead>
+                              <tr>
+                                  <th class="text-center">#</th>
+                                  <th>Job Position</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                      '''
+                      
+                      for i, row in enumerate(result['recommendations']):                             
+                        html += f'<tr><td class="text-center">{i+1}</td><td> { row } </td></tr>'
+                       
+                      html +='</tbody></table>'
+
+                      document["result"].html = html
+                    else:
+                        warnings.warn(response.text)
+            
+                def get_prediction(ev):
+                    """Get the predicted probability."""
+                    req = ajax.ajax()
+                    req.bind('complete', show_results)
+                    req.open('POST', '/predict', True)
+                    req.set_header('content-type','application/json')
+                    user_inputs = [document[f'user_input{i}'].value for i in range(1, 10)]
+                    data = json.dumps({'user_inputs': user_inputs})
+                    req.send(data)
+                    
+                document["predict_button"].bind("click", get_prediction)
+            
+            
+            
+                def get_feedback(ev):
+                    """Get user feedback."""
+                    req = ajax.ajax()
+                    req.open('POST', '/feedback', True)
+                    req.set_header('content-type','application/json')
+                    data1 = json.dumps({'user_feedback': document['user_feedback'].value})
+                    req.send(data1)
+                
+                document["feedback_button"].bind("click", get_feedback)
+            
+            
+              </script>
+
+              <!-- <div class="row">
+                <div class="col-lg-12 text-muted">
+                  <h5 class="section-subheading text-muted">Rate each based off your interests</h3>
+                    <br/>
+                    <br/>
+                </div>
+              </div> -->
+ 
+      <div class='row1'>     <!--Start of Row 1-->
+              <p class="lead">Analyst</p> 
+              <div class=row>
+                <div class="col-sm-3">🙁</div>
+                <div class="col-sm-3">😐</div>
+                <div class="col-sm-3">😀</div>
+              </div>
+              <input type="range" min="1" max="10" value="10" class="slider" id="user_input1">
+              <br/>
+              <br/>
+              <p class="lead">Security</p>
+              <div class=row>
+                  <div class="col-sm-3">🙁</div>
+                  <div class="col-sm-3">😐</div>
+                  <div class="col-sm-3">😀</div>
+                </div>
+              <input type="range" min="1" max="10" value="10" class="slider" id="user_input2">
+              <br/>
+              <br/>
+              <p class="lead">Leadership</p>
+              <div class=row>
+                  <div class="col-sm-3">🙁</div>
+                  <div class="col-sm-3">😐</div>
+                  <div class="col-sm-3">😀</div>
+                </div>
+              <input type="range" min="1" max="10" value="10" class="slider" id="user_input3">
+              <br/>
+          </div>    <!--END ROW1-->
+
+    <div class='row1'>     <!--Start of Row 2-->
+              <p class="lead">Software/App Dev</p>
+              <div class=row>
+                  <div class="col-sm-3">🙁</div>
+                  <div class="col-sm-3">😐</div>
+                  <div class="col-sm-3">😀</div>
+                </div>
+              <input type="range" min="1" max="10" value="10" class="slider" id="user_input4">
+              <br/>
+              <br/>
+              <p class="lead">Cloud Computing</p>
+              <div class=row>
+                  <div class="col-sm-3">🙁</div>
+                  <div class="col-sm-3">😐</div>
+                  <div class="col-sm-3">😀</div>
+                </div>
+              <input type="range" min="1" max="10" value="10" class="slider" id="user_input5">
+              <br/>
+              <br/>
+              <p class="lead">Computer Network</p>
+              <div class=row>
+                  <div class="col-sm-3">🙁</div>
+                  <div class="col-sm-3">😐</div>
+                  <div class="col-sm-3">😀</div>
+                </div>
+              <input type="range" min="1" max="10" value="10" class="slider" id="user_input6">
+              <br/>
+          </div>  <!--END ROW2-->
+    <div class='row1'>  <!--Start of Row3-->
+              <p class="lead">Database Admin</p>
+              <div class=row>
+                  <div class="col-sm-3">🙁</div>
+                  <div class="col-sm-3">😐</div>
+                  <div class="col-sm-3">😀</div>
+                </div>
+              <input type="range" min="1" max="10" value="10" class="slider" id="user_input7">
+              <br/>
+              <br/>
+              <p class="lead">Computer Support</p>
+              <div class=row>
+                  <div class="col-sm-3">🙁</div>
+                  <div class="col-sm-3">😐</div>
+                  <div class="col-sm-3">😀</div>
+                </div>
+              <input type="range" min="1" max="10" value="10" class="slider" id="user_input8">
+              <br/>
+              <br/>
+              <p class="lead">Web Dev</p>
+              <div class=row>
+                  <div class="col-sm-3">🙁</div>
+                  <div class="col-sm-3">😐</div>
+                  <div class="col-sm-3">😀</div>
+                </div>
+              <input type="range" min="1" max="10" value="10" class="slider" id="user_input9">
+              <br/>
+        </div> <!--END ROW3 -->
+              <button id="predict_button">Recommend!</button>
+              <br/>
+              <br/>
+              <div id="result"></div>
+              <br/>
+              <br/>
+              <br/>
+              <br/>
+              <p class="lead">How did you like your recommendations?</p>
+              <div class=row>
+                  <div class="col-sm-1">🙁</div>
+                  <div class="col-sm-1">😐</div>
+                  <div class="col-sm-1">😀</div>
+                </div>
+              <input type="range" min="1" max="3" value="3" class="slider" id="user_feedback">
+              <button id="feedback_button">Enter!</button>
+              <br/>
+              <a>Just one click please</a>
+              
+              
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <!-- <h2>About DreamJobber</h2>
+          <p class="lead">Recommendation System</p> -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <img class= 'mondow rounded-circle' src='images/mondow.jpg' alt="mondow"> 
+  <section id="contact"> 
+    
+    <div class="container">
+      <div class="row" class="row2">
+        <div class="col-lg-8 mx-auto">
+          <h2>Mando Iwanaga</h2>
+          <p class="lead">Data Scientist</p>
+          <a href="https://github.com/mandoiwanaga">Github</a>
+          <br/>
+          <a href="https://www.linkedin.com/in/mandoiwanaga/">Linkedin</a>
+          <br/>
+          <a href="https://medium.com/@mandoiwanaga08">Medium</a>
+          <br/>
+          <a>Email: mandoiwanaga08@gmail.com</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; DreamJobber 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom JavaScript for this theme -->
+  <script src="js/scrolling-nav.js"></script>
+
+</body>
+
+</html>
