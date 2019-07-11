@@ -27,9 +27,9 @@ Example of data scraped:
 
 
 ## Modeling
-After data preparation, I implemented Bag of Words for term frequency and gensim's bow2doc function to count the number of occurrences of each distinct word, convert the word to its integer word id and return the result as a sparse vector. I then used an LDA (Latent Dirichlet Allocation) model to classify job descriptions to 9 different topic groups. I chose 9 topic groups because it best represents the job groups in the Tech Job market. Next I created a dataframe with topic scores and their corresponding job titles and descriptions. <br />
+After data preparation, I implemented Bag of Words for term frequency and gensim's bow2doc function to count the number of occurrences of each distinct word, convert the word to its integer word id, and return the result as a sparse vector. I then used an LDA (Latent Dirichlet Allocation) model to classify job descriptions to 9 different topic groups. I chose 9 topic groups because it best represents the job groups in the Tech Job market. Next I created a dataframe with job descriptions and the probability it belonged to each topic with their corresponding job titles. <br />
 <br />
-The next step was to tie in a user's input to make recommendations. Because my data is text data, I used an unsupervised learning model, Nearest Neighbors using Euclidean Distance metric. A user can input probabilities based on the 9 topics and will calculate the closest instances the model has been fitted on. 
+The next step was to tie in a user's input to make recommendations. For this I used an unsupervised learning model, Nearest Neighbors using Euclidean Distance metric. A user can input probabilities based on the 9 topics and will calculate the closest instances the model has been fitted on. 
 
 ## Deployment
 The model is deployed as a flask app and can be accessed at <a href="http://www.dreamjobber.online/" >dreamjobber.online</a>.  <br />
@@ -42,10 +42,10 @@ To run the flask app locally: Clone the repo, then the following command can be 
 
 
 ## Evaluating
-Because I don't have user data prior to modeling and deployment, I am collecting feedback evaluations from users. I will store the user's inputs, recommendation outputs, and feedback of whether they liked their recommendations or not. These are being stored in mongodb atlas. 
+Because I don't have user data prior to modeling and deployment, I am collecting feedback evaluations from users. I will store the user's inputs, recommendation outputs, and feedback of whether they liked their recommendations or not. These are being stored in mongodb atlas database. 
 
 
 ## Future Work
-- Add links to the output of recommendations in order to provide details about each recommendation, ex.    description or avg salary. 
+- Add links to the output of recommendations in order to provide details about each recommendation, ex. description or avg salary. 
 - Classify job titles.
 - After collecting sufficient user feedback, create an ALS recommendation model.
