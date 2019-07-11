@@ -3,10 +3,6 @@ from gensim.models.ldamodel import LdaModel
 from gensim.corpora.dictionary import Dictionary
 
 
-
-
-
-
 def show_topics_sentences(ldamodel, corpus, texts):
     """Returns dataframe with topics and descriptions"""
     sent_topics_df = pd.DataFrame()
@@ -19,18 +15,15 @@ def show_topics_sentences(ldamodel, corpus, texts):
             if j == 0:  # => dominant topic
                 wp = ldamodel.show_topic(topic_num)
                 topic_keywords = ", ".join([word for word, prop in wp])
-                sent_topics_df = sent_topics_df.append(pd.Series([int(topic_num), 
-                                                                  round(prop_topic,4), 
-                                                                  topic_keywords]), 
-                                                                   ignore_index=True)
+                sent_topics_df = sent_topics_df.append(
+                    pd.Series([int(topic_num), round(prop_topic, 4), topic_keywords]),
+                    ignore_index=True,
+                )
             else:
                 break
-    sent_topics_df.columns = ['Dominant_Topic', 'Perc_Contribution', 'Topic_Keywords']
+    sent_topics_df.columns = ["Dominant_Topic", "Perc_Contribution", "Topic_Keywords"]
 
     # Add original text to the end of the output
     contents = pd.Series(texts)
     sent_topics_df = pd.concat([sent_topics_df, contents], axis=1)
-    return(sent_topics_df)
-
-
-
+    return sent_topics_df
