@@ -49,3 +49,7 @@ Because I don't have user data prior to modeling and deployment, I am collecting
 - Add links to the output of recommendations in order to provide details about each recommendation, ex. description or avg salary. 
 - Classify job titles.
 - After collecting sufficient user feedback, create an ALS recommendation model.
+
+---
+
+### Presentation: [dreamjobber presentation](presentation.pdf)
