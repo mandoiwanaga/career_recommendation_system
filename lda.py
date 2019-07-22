@@ -8,12 +8,12 @@ def show_topics_sentences(ldamodel, corpus, texts):
     """Returns dataframe with topics and descriptions"""
     sent_topics_df = pd.DataFrame()
 
-    # Get main topic in each document
+    # Get main topic for each document
     for i, row in enumerate(ldamodel[corpus]):
         row = sorted(row, key=lambda x: (x[1]), reverse=True)
-        # Get the Dominant topic, Perc Contribution and Keywords for each document
+        # Get the dominant topic, percent contribution, and keywords for each
         for j, (topic_num, prop_topic) in enumerate(row):
-            if j == 0:  # => dominant topic
+            if j == 0:  
                 wp = ldamodel.show_topic(topic_num)
                 topic_keywords = ", ".join([word for word, prop in wp])
                 sent_topics_df = sent_topics_df.append(
