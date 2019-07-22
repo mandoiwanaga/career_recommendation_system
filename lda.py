@@ -1,6 +1,7 @@
 from gensim.models.coherencemodel import CoherenceModel
 from gensim.models.ldamodel import LdaModel
 from gensim.corpora.dictionary import Dictionary
+import pandas as pd
 
 
 def show_topics_sentences(ldamodel, corpus, texts):

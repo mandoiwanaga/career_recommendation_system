@@ -36,7 +36,7 @@ def input_user_scores():
         "Analyst",
         "Security",
         "Leadership",
-        "Software/Web Dev",
+        "Software/App Dev",
         "Cloud Computing",
         "Computer Network",
         "Database Admin",
